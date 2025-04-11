@@ -3,8 +3,8 @@ package com.jabra.api.application.dto;
 public class AddressDto {
     public String cep;
     public String logradouro;
-    public String complemento;
-    public String unidade;
+  //  public String complemento;
+  //  public String unidade;
     public String bairro;
     public String localidade;
     public String uf;
@@ -16,8 +16,8 @@ public class AddressDto {
     public AddressDto(String cep, String logradouro, String bairro, String localidade, String uf, String estado) {
         this.cep = cep;
         this.logradouro = logradouro;
-        this.complemento = complemento;
-        this.unidade = unidade;
+     //   this.complemento = complemento;
+     //   this.unidade = unidade;
         this.bairro = bairro;
         this.localidade = localidade;
         this.uf = uf;
@@ -41,21 +41,21 @@ public class AddressDto {
         this.logradouro = logradouro;
     }
 
-    public String getComplemento() {
-        return complemento;
-    }
-
-    public void setComplemento(String complemento) {
-        this.complemento = complemento;
-    }
-
-    public String getUnidade() {
-        return unidade;
-    }
-
-    public void setUnidade(String unidade) {
-        this.unidade = unidade;
-    }
+//    public String getComplemento() {
+//        return complemento;
+//    }
+//
+//    public void setComplemento(String complemento) {
+//        this.complemento = complemento;
+//    }
+//
+//    public String getUnidade() {
+//        return unidade;
+//    }
+//
+//    public void setUnidade(String unidade) {
+//        this.unidade = unidade;
+//    }
 
     public String getBairro() {
         return bairro;

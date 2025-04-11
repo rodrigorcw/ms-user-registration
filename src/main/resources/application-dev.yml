@@ -16,6 +16,14 @@ feign:
         connectTimeout: 5000
         readTimeout: 5000
 
+api-endereco:         # corresponde ao @FeignClient(name = "api-endereco")
+  url: https://viacep.com.br/ws
+
+
+  cloud:
+    config:
+      import-check:
+        enabled: false
 
   datasource:
     url: jdbc:h2:mem:ms-user

@@ -3,6 +3,7 @@ package com.jabra.api.application.service;
 import com.jabra.api.adapter.UserAdapter;
 import com.jabra.api.application.dto.AddressDto;
 import com.jabra.api.application.dto.UserDto;
+import com.jabra.api.domain.model.Address;
 import com.jabra.api.domain.model.User;
 import com.jabra.api.domain.service.UserService;
 import com.jabra.api.infra.feign.ViaCepClient;
@@ -54,9 +55,29 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto Update(Long id, UserDto userDto) {
         User userUp = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
+
         userUp.setName(userDto.getName());
+        userUp.setCep(userDto.getCep());
         userUp.setEmail(userDto.getEmail());
-        userRepository.save(userUp);
+
+        AddressDto address = viaCepClient.getAddressByCep(userDto.getCep());
+
+        Address userAddress = userUp.getAddress();
+        if (userAddress == null) {
+            userAddress = new Address(); // Se o usuário ainda não tem endereço
+            userUp.setAddress(userAddress);
+        }
+
+        userAddress.setCep(address.getCep());
+        userAddress.setLogradouro(address.getLogradouro());
+        userAddress.setBairro(address.getBairro());
+        userAddress.setLocalidade(address.getLocalidade());
+        userAddress.setUf(address.getUf());
+        userAddress.setEstado(address.getEstado());
+
+
+        User updatedUser = userRepository.save(userUp);
+
         return UserAdapter.toDto(userUp);
     }
 
