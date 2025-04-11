@@ -1,4 +1,22 @@
+api-endereco:         # corresponde ao @FeignClient(name = "api-endereco")
+   url: https://viacep.com.br/ws
+
+
+
 spring:
+  cloud:
+    config:
+      import-check:
+        enabled: false
+
+
+
+
+
+
+
+
+
   datasource:
     url: jdbc:postgresql://localhost:5432/ms-user
     username: postgres

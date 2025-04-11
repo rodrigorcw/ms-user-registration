@@ -1,9 +1,8 @@
 package com.jabra.api.infra.web;
 
-import com.jabra.api.adapter.UserAdapter;
 import com.jabra.api.application.dto.UserDto;
-import com.jabra.api.domain.model.User;
 import com.jabra.api.domain.service.UserService;
+import com.jabra.api.infra.feign.ViaCepClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +15,7 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
+    private ViaCepClient viaCepClient;
 
     @GetMapping
     public ResponseEntity<List<UserDto>> findAll() {
@@ -27,9 +26,9 @@ public class UserController {
     public ResponseEntity<UserDto> findById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.findById(id));
     }
-
+//
     @PostMapping
-    public ResponseEntity<UserDto> Created(@RequestBody UserDto userDto) {
+    public ResponseEntity<UserDto> created(@RequestBody UserDto userDto) {
         return ResponseEntity.ok(userService.Created(userDto));
     }
 

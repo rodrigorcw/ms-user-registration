@@ -1,9 +1,11 @@
 package com.jabra.api.application.service;
 
 import com.jabra.api.adapter.UserAdapter;
+import com.jabra.api.application.dto.AddressDto;
 import com.jabra.api.application.dto.UserDto;
 import com.jabra.api.domain.model.User;
 import com.jabra.api.domain.service.UserService;
+import com.jabra.api.infra.feign.ViaCepClient;
 import com.jabra.api.infra.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ViaCepClient viaCepClient;
 
     @Override
     public List<UserDto> findAll() {
@@ -24,18 +28,28 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
+
     @Override
     public UserDto findById(Long id) {
-        var findUser = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
-        return UserAdapter.toDto(findUser);
+        var user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        return UserAdapter.toDto(user);
+
     }
+
 
     @Override
     public UserDto Created(UserDto userDto) {
-        User save = userRepository.save(UserAdapter.toEntity(userDto));
-        return UserAdapter.toDto(save);
+
+        AddressDto address = viaCepClient.getAddressByCep(userDto.getCep());
+
+        User saveUser = userRepository.save(UserAdapter.toEntity(userDto, UserAdapter.toEntity(address)));
+
+        UserDto response = UserAdapter.toDto(saveUser);
+
+        return response;
 
     }
+
 
     @Override
     public UserDto Update(Long id, UserDto userDto) {
